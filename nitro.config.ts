@@ -33,14 +33,16 @@ const nitroOption: Parameters<typeof viteNitro>[0] = {
 }
 
 if (process.env.VERCEL) {
-  nitroOption.preset = "vercel-edge"
-  // You can use other online database, do it yourself. For more info: https://db0.unjs.io/connectors
-  nitroOption.database = undefined
-  // nitroOption.vercel = {
-  //   config: {
-  //     cache: []
-  //   },
-  // }
+    nitroOption.database = {
+      default: {
+        connector: 'sqlite',
+        options: {
+          url: process.env.TURSO_DATABASE_URL,
+          authToken: process.env.TURSO_AUTH_TOKEN,
+        },
+      },
+    }
+  }
 } else if (process.env.CF_PAGES) {
   nitroOption.preset = "cloudflare-pages"
   nitroOption.unenv = {
